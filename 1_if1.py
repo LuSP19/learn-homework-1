@@ -14,12 +14,30 @@
 
 """
 
+
+def get_occupation(age):
+    if 0 <= age < 7:
+        return 'Учёба в детском саду'
+    elif 7 <= age < 18:
+        return 'Учёба в школе'
+    elif 18 <= age < 23:
+        return 'Учёба в ВУЗе'
+    elif age >= 23:
+        return 'Работа'
+    else:
+        raise ValueError('Введён некорректный возраст')
+
+
 def main():
     """
     Эта функция вызывается автоматически при запуске скрипта в консоли
     В ней надо заменить pass на ваш код
     """
-    pass
+
+    age = int(input('Введите возраст: '))
+    occupation = get_occupation(age)
+    print(occupation)
+
 
 if __name__ == "__main__":
     main()

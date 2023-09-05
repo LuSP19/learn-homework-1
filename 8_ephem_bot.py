@@ -12,22 +12,20 @@
   бота отвечать, в каком созвездии сегодня находится планета.
 
 """
+
+from datetime import date
 import logging
 
+from environs import Env
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-
-logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO,
-                    filename='bot.log')
+import ephem
 
 
-PROXY = {
-    'proxy_url': 'socks5://t1.learn.python.ru:1080',
-    'urllib3_proxy_kwargs': {
-        'username': 'learn',
-        'password': 'python'
-    }
-}
+logging.basicConfig(
+    format='%(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO,
+    filename='bot.log'
+)
 
 
 def greet_user(update, context):
@@ -42,15 +40,29 @@ def talk_to_me(update, context):
     update.message.reply_text(text)
 
 
-def main():
-    mybot = Updater("КЛЮЧ, КОТОРЫЙ НАМ ВЫДАЛ BotFather", request_kwargs=PROXY, use_context=True)
+def get_constellation(update, context):
+    planet_name = update.message.text.split()[1]
+    planet = getattr(ephem, planet_name)(date.today())
+    constellation = ephem.constellation(planet)
+    update.message.reply_text(
+        f'{planet_name} is currently in the constellation of '
+        f'{constellation[1]}'
+    )
 
-    dp = mybot.dispatcher
-    dp.add_handler(CommandHandler("start", greet_user))
+
+def main():
+    env = Env()
+    env.read_env()
+
+    bot = Updater(env('TG_BOT_TOKEN'), use_context=True)
+
+    dp = bot.dispatcher
+    dp.add_handler(CommandHandler('start', greet_user))
+    dp.add_handler(CommandHandler('planet', get_constellation))
     dp.add_handler(MessageHandler(Filters.text, talk_to_me))
 
-    mybot.start_polling()
-    mybot.idle()
+    bot.start_polling()
+    bot.idle()
 
 
 if __name__ == "__main__":
