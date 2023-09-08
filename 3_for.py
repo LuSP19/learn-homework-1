@@ -56,7 +56,8 @@ def main():
         print(f'\tСуммарные: {total_product_sales}')
         print(f'\tСредние: {average_product_sales}\n')
 
-    average_sales = round(total_sales / 12 / product_count)
+    sales_data_count = product_count * 12
+    average_sales = round(total_sales / sales_data_count)
 
     print(f'Суммарные продажи всех товаров: {total_sales}')
     print(f'Средние продажи всех товаров: {average_sales}')
