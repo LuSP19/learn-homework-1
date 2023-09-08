@@ -13,7 +13,6 @@
 
 """
 
-from datetime import date
 import logging
 
 from environs import Env
@@ -42,7 +41,8 @@ def talk_to_me(update, context):
 
 def get_constellation(update, context):
     planet_name = update.message.text.split()[1]
-    planet = getattr(ephem, planet_name)(date.today())
+    planet = getattr(ephem, planet_name)()
+    planet.compute()
     constellation = ephem.constellation(planet)
     update.message.reply_text(
         f'{planet_name} is currently in the constellation of '
