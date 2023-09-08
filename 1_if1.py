@@ -18,11 +18,11 @@
 def get_occupation(age):
     if 0 <= age < 7:
         return 'Учёба в детском саду'
-    elif 7 <= age < 18:
+    if 7 <= age < 18:
         return 'Учёба в школе'
-    elif 18 <= age < 23:
+    if 18 <= age < 23:
         return 'Учёба в ВУЗе'
-    elif age >= 23:
+    if age >= 23:
         return 'Работа'
     else:
         raise ValueError('Введён некорректный возраст')

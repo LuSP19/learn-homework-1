@@ -20,9 +20,9 @@ def compare_strings(string_1, string_2):
     if isinstance(string_1, str) and isinstance(string_2, str):
         if string_1 == string_2:
             return 1
-        elif len(string_1) > len(string_2):
+        if len(string_1) > len(string_2):
             return 2
-        elif string_2 == 'learn':
+        if string_2 == 'learn':
             return 3
     return 0
 
